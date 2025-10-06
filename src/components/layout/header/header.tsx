@@ -6,7 +6,7 @@ const logoURL =
 
 export function Header() {
   return (
-    <header className="fixed z-50 w-full border-b-1">
+    <header className="fixed z-50 w-full border-b-1 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           <span className="text-2xl font-bold">
