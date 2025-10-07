@@ -6,7 +6,7 @@ type LayoutProps = {
 
 export function Layout({ children }: LayoutProps) {
   return (
-    <div className="relative flex min-h-screen flex-col">
+    <div className="flex flex-col min-h-screen">
       <Header />
       <main>{children}</main>
     </div>

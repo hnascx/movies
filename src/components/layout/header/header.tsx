@@ -6,17 +6,20 @@ const logoURL =
 
 export function Header() {
   return (
-    <header className="fixed z-50 w-full border-b-1 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-20 items-center justify-between">
+    <header className="sticky z-50 w-full border-b-1 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="mx-auto max-w-7xl px-6 sm:px-6 lg:px-8">
+        <div className="flex h-16 md:h-20 items-center justify-between">
           <span className="text-2xl font-bold">
-            <Image
-              src={logoURL}
-              alt="Bolha"
-              width={138}
-              height={52}
-              className="invert dark:invert-0"
-            />
+            <div className="relative w-[100px] h-[38px] sm:w-[138px] sm:h-[52px]">
+              <Image
+                src={logoURL}
+                alt="Bolha"
+                fill
+                className="object-contain invert dark:invert-0"
+                sizes="(max-width: 640px) 100px, 138px"
+                priority
+              />
+            </div>
           </span>
 
           <nav className="flex items-center gap-6">
