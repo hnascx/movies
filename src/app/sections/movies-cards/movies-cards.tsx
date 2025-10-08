@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button"
 import {
   Card,
   CardContent,
@@ -6,9 +5,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+
 import { Label } from "@/components/ui/label"
-import { ChevronRight } from "lucide-react"
 import Image from "next/image"
+import { MovieDialog } from "../movie-dialog"
 
 export function MoviesCards() {
   return (
@@ -36,13 +36,7 @@ export function MoviesCards() {
                 mentors Lucy Gray Baird, the female tribute from District 12.
               </CardDescription>
               <div className="w-full flex relative">
-                <Button
-                  variant="link"
-                  className="p-0 h-4 text-sm absolute left-19.5 md:left-21.5 bottom-0"
-                >
-                  Ver mais
-                  <ChevronRight className="size-4 -ml-1 mt-0.5" />
-                </Button>
+                <MovieDialog />
               </div>
             </div>
           </CardContent>
