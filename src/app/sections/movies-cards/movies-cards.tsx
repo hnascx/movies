@@ -9,21 +9,13 @@ import {
 } from "@/components/ui/card"
 
 import { Label } from "@/components/ui/label"
+import { useDelayedLoading } from "@/lib/hooks"
 import Image from "next/image"
-import { useEffect, useState } from "react"
 import { MovieDialog } from "../movie-dialog"
 import { MoviesCardsLoading } from "./loading"
 
 export function MoviesCards() {
-  const [isLoading, setIsLoading] = useState(true)
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setIsLoading(false)
-    }, 2000)
-
-    return () => clearTimeout(timer)
-  }, [])
+  const isLoading = useDelayedLoading(2000)
 
   if (isLoading) {
     return <MoviesCardsLoading />

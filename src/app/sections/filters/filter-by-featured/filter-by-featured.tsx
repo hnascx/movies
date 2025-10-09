@@ -9,12 +9,15 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import { delay } from "@/lib/utils"
-import { Suspense, use } from "react"
+import { useDelayedLoading } from "@/lib/hooks"
 import { FilterByFeaturedLoading } from "./loading"
 
-function FilterByFeaturedSelect() {
-  use(delay(2000))
+export function FilterByFeatured() {
+  const isLoading = useDelayedLoading(2000)
+
+  if (isLoading) {
+    return <FilterByFeaturedLoading />
+  }
 
   return (
     <Select>
@@ -29,13 +32,5 @@ function FilterByFeaturedSelect() {
         </SelectGroup>
       </SelectContent>
     </Select>
-  )
-}
-
-export function FilterByFeatured() {
-  return (
-    <Suspense fallback={<FilterByFeaturedLoading />}>
-      <FilterByFeaturedSelect />
-    </Suspense>
   )
 }
