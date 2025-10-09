@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Select,
   SelectContent,
@@ -7,8 +9,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { Suspense, use } from "react"
+import { FilterByCategoryLoading } from "./loading"
+import { delay } from "@/lib/utils"
 
-export function FilterByCategory() {
+function FilterByCategorySelect() {
+  use(delay(2000))
+
   return (
     <Select>
       <SelectTrigger className="w-full md:w-[180px]">
@@ -27,5 +34,13 @@ export function FilterByCategory() {
         </SelectGroup>
       </SelectContent>
     </Select>
+  )
+}
+
+export function FilterByCategory() {
+  return (
+    <Suspense fallback={<FilterByCategoryLoading />}>
+      <FilterByCategorySelect />
+    </Suspense>
   )
 }

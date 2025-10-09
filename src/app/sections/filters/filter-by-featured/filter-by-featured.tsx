@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Select,
   SelectContent,
@@ -7,8 +9,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { delay } from "@/lib/utils"
+import { Suspense, use } from "react"
+import { FilterByFeaturedLoading } from "./loading"
 
-export function FilterByFeatured() {
+function FilterByFeaturedSelect() {
+  use(delay(2000))
+
   return (
     <Select>
       <SelectTrigger className="w-full md:w-[145px]">
@@ -22,5 +29,13 @@ export function FilterByFeatured() {
         </SelectGroup>
       </SelectContent>
     </Select>
+  )
+}
+
+export function FilterByFeatured() {
+  return (
+    <Suspense fallback={<FilterByFeaturedLoading />}>
+      <FilterByFeaturedSelect />
+    </Suspense>
   )
 }

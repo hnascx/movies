@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Card,
   CardContent,
@@ -8,9 +10,25 @@ import {
 
 import { Label } from "@/components/ui/label"
 import Image from "next/image"
+import { useEffect, useState } from "react"
 import { MovieDialog } from "../movie-dialog"
+import { MoviesCardsLoading } from "./loading"
 
 export function MoviesCards() {
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false)
+    }, 2000)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (isLoading) {
+    return <MoviesCardsLoading />
+  }
+
   return (
     <section className="mt-6 md:mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
       {Array.from({ length: 20 }).map((_, index) => (
