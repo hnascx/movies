@@ -1,10 +1,13 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from "next"
 
 const nextConfig: NextConfig = {
   devIndicators: false,
   images: {
-    domains: ["www.themoviedb.org"],
+    remotePatterns: [
+      { hostname: "www.themoviedb.org" },
+      { hostname: "image.tmdb.org" },
+    ],
   },
-};
+}
 
-export default nextConfig;
+export default nextConfig

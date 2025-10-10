@@ -3,39 +3,39 @@ const API_URL = `${STRAPI_URL}/api`
 
 export type MovieCategory = "now_playing" | "popular" | "top_rated" | "upcoming"
 
+// Strapi v5 structure - dados diretos, sem attributes
 export interface StrapiGenre {
   id: number
-  attributes: {
-    tmdb_id: number
-    name: string
-  }
+  documentId: string
+  tmdb_id: number
+  name: string
+  createdAt?: string
+  updatedAt?: string
+  publishedAt?: string
 }
 
 export interface StrapiMovie {
   id: number
-  attributes: {
-    tmdb_id: number
-    title: string
-    original_title: string
-    original_language: string
-    overview: string
-    poster_path: string | null
-    backdrop_path: string | null
-    release_date: string
-    popularity: number
-    vote_average: number
-    vote_count: number
-    adult: boolean
-    video: boolean
-    featured: boolean
-    category: MovieCategory | null
-    createdAt: string
-    updatedAt: string
-    publishedAt: string
-    genres?: {
-      data: StrapiGenre[]
-    }
-  }
+  documentId: string
+  tmdb_id: number
+  title: string
+  original_title: string
+  original_language: string
+  overview: string
+  poster_path: string | null
+  backdrop_path: string | null
+  release_date: string
+  popularity: number
+  vote_average: number
+  vote_count: number
+  adult: boolean
+  video: boolean
+  featured: boolean
+  category: MovieCategory | null
+  createdAt: string
+  updatedAt: string
+  publishedAt: string
+  genres?: StrapiGenre[]
 }
 
 export interface StrapiResponse<T> {
@@ -102,7 +102,6 @@ export async function getMovies(
   return response.json()
 }
 
-
 export async function getMovie(
   id: number
 ): Promise<StrapiResponse<StrapiMovie>> {
@@ -116,7 +115,6 @@ export async function getMovie(
   return response.json()
 }
 
-
 export async function getGenres(): Promise<StrapiResponse<StrapiGenre[]>> {
   const url = `${API_URL}/genres`
   const response = await fetch(url)
@@ -127,7 +125,6 @@ export async function getGenres(): Promise<StrapiResponse<StrapiGenre[]>> {
 
   return response.json()
 }
-
 
 export async function getMoviesByGenre(
   genreId: number,
@@ -170,27 +167,24 @@ export async function getMoviesByGenre(
   return response.json()
 }
 
-
-// Converte formato Strapi para o formato usado no frontend
+// Converte formato Strapi v5 para o formato usado no frontend
 export function transformStrapiMovie(strapiMovie: StrapiMovie) {
-  const { attributes } = strapiMovie
-
   return {
-    id: attributes.tmdb_id,
-    adult: attributes.adult,
-    backdrop_path: attributes.backdrop_path || "",
-    genre_ids: attributes.genres?.data.map((g) => g.attributes.tmdb_id) || [],
-    original_language: attributes.original_language,
-    original_title: attributes.original_title,
-    overview: attributes.overview,
-    popularity: attributes.popularity,
-    poster_path: attributes.poster_path || "",
-    release_date: attributes.release_date,
-    title: attributes.title,
-    video: attributes.video,
-    vote_average: attributes.vote_average,
-    vote_count: attributes.vote_count,
-    featured: attributes.featured,
+    id: strapiMovie.tmdb_id,
+    adult: strapiMovie.adult,
+    backdrop_path: strapiMovie.backdrop_path || "",
+    genre_ids: strapiMovie.genres?.map((g) => g.tmdb_id) || [],
+    original_language: strapiMovie.original_language,
+    original_title: strapiMovie.original_title,
+    overview: strapiMovie.overview,
+    popularity: strapiMovie.popularity,
+    poster_path: strapiMovie.poster_path || "",
+    release_date: strapiMovie.release_date,
+    title: strapiMovie.title,
+    video: strapiMovie.video,
+    vote_average: strapiMovie.vote_average,
+    vote_count: strapiMovie.vote_count,
+    featured: strapiMovie.featured,
   }
 }
 

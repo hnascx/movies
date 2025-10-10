@@ -8,10 +8,27 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
+import { GENRE_COLORS, GENRE_NAMES } from "@/data/genres"
+import { getImageUrl, type Movie } from "@/types/movie"
 import { ChevronRight, Star } from "lucide-react"
 import Image from "next/image"
 
-export function MovieDialog() {
+interface MovieDialogProps {
+  movie: Movie
+}
+
+export function MovieDialog({ movie }: MovieDialogProps) {
+  const posterUrl = getImageUrl(movie.poster_path, "w500")
+
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString)
+    return date.toLocaleDateString("pt-BR", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    })
+  }
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -27,59 +44,76 @@ export function MovieDialog() {
         <div className="flex flex-col md:flex-row m-4 gap-6">
           <div className="mx-auto">
             <div className="h-[330px] w-[220px] relative shrink-0">
-              <Image
-                src="https://www.themoviedb.org/t/p/w220_and_h330_face//mBaXZ95R2OxueZhvQbcEWy2DqyO.jpg"
-                className="rounded-md object-cover"
-                alt="Movie Card"
-                fill
-              />
+              {posterUrl ? (
+                <Image
+                  src={posterUrl}
+                  className="rounded-md object-cover"
+                  alt={movie.title}
+                  fill
+                />
+              ) : (
+                <div className="w-full h-full bg-muted rounded-md flex items-center justify-center">
+                  <span className="text-sm text-muted-foreground">
+                    Sem imagem
+                  </span>
+                </div>
+              )}
             </div>
           </div>
           <div className="flex flex-col gap-3 md:gap-4">
             <div className="flex flex-col gap-1 md:gap-2">
-              <Label className="text-md font-semibold">IMDb</Label>
-              <Label>
-                8.0/10
-                <span className="text-xs text-muted-foreground">
-                  (200 avaliações)
-                </span>
+              <Label className="text-md font-semibold">Avaliação</Label>
+              <div className="flex items-center gap-1">
+                <Label>
+                  {movie.vote_average.toFixed(1)}/10
+                  <span className="text-xs text-muted-foreground ml-1">
+                    ({movie.vote_count} avaliações)
+                  </span>
+                </Label>
                 <Star className="size-5" fill="#f9c503" stroke="#f9c503" />
-              </Label>
+              </div>
             </div>
             <div className="flex flex-col gap-1 md:gap-2">
               <Label className="text-md font-semibold">Lançamento</Label>
-              <Label>27 de novembro de 2025</Label>
+              <Label>{formatDate(movie.release_date)}</Label>
             </div>
             <div className="flex flex-col gap-1 md:gap-2">
               <Label className="text-md font-semibold">Classificação</Label>
-              <Badge className="text-xs font-semibold bg-green-600 text-white">
-                Livre
+              <Badge
+                className={`text-xs font-semibold ${
+                  movie.adult
+                    ? "bg-red-600 text-white"
+                    : "bg-green-600 text-white"
+                }`}
+              >
+                {movie.adult ? "+18" : "Livre"}
               </Badge>
             </div>
-            <div className="flex flex-col gap-1 md:gap-2">
-              <Label className="text-md font-semibold">Gênero(s)</Label>
-              <div className="flex flex-row gap-2 flex-wrap">
-                <Badge className="text-xs font-semibold bg-purple-600 text-white">
-                  Ação
-                </Badge>
-                <Badge className="text-xs font-semibold bg-yellow-600 text-white">
-                  Aventura
-                </Badge>
-                <Badge className="text-xs font-semibold bg-blue-600 text-white">
-                  Drama
-                </Badge>
+            {movie.genre_ids && movie.genre_ids.length > 0 && (
+              <div className="flex flex-col gap-1 md:gap-2">
+                <Label className="text-md font-semibold">Gênero(s)</Label>
+                <div className="flex flex-row gap-2 flex-wrap">
+                  {movie.genre_ids.map((genreId) => (
+                    <Badge
+                      key={genreId}
+                      className={`text-xs font-semibold ${
+                        GENRE_COLORS[genreId] || "bg-gray-600"
+                      } text-white`}
+                    >
+                      {GENRE_NAMES[genreId] || "Desconhecido"}
+                    </Badge>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
         <div className="flex flex-col mx-4 mb-4 gap-4">
           <DialogTitle className="text-2xl font-bold">
-            The Hunger Games: The Ballad of Songbirds & Snakes
+            {movie.title}
           </DialogTitle>
           <DialogDescription className="text-md">
-            64 years before he becomes the tyrannical president of Panem,
-            Coriolanus Snow sees a chance for a change in fortunes when he
-            mentors Lucy Gray Baird, the female tribute from District 12.
+            {movie.overview}
           </DialogDescription>
         </div>
       </DialogContent>
