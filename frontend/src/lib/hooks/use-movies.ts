@@ -7,6 +7,7 @@ interface UseMoviesParams {
   category?: MovieCategory
   featured?: boolean
   pageSize?: number
+  search?: string
 }
 
 interface UseMoviesReturn {
@@ -26,17 +27,14 @@ export function useMovies(params?: UseMoviesParams): UseMoviesReturn {
       setLoading(true)
       setError(null)
 
-      console.log("🔍 Buscando filmes do Strapi...")
-
       const { data } = await getMovies({
         category: params?.category,
         featured: params?.featured,
         pageSize: params?.pageSize || 20,
         sortBy: "popularity",
         sortOrder: "desc",
+        search: params?.search,
       })
-
-      console.log("✅ Filmes recebidos:", data.length)
 
       const transformedMovies = transformStrapiMovies(data)
       setMovies(transformedMovies)
@@ -56,7 +54,7 @@ export function useMovies(params?: UseMoviesParams): UseMoviesReturn {
 
   useEffect(() => {
     fetchMovies()
-  }, [params?.category, params?.featured, params?.pageSize])
+  }, [params?.category, params?.featured, params?.pageSize, params?.search])
 
   return {
     movies,
