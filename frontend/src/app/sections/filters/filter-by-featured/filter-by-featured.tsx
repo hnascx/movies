@@ -22,21 +22,19 @@ export function FilterByFeatured() {
   }
 
   const handleValueChange = (value: string) => {
-    if (value === "all") {
-      setFeatured(undefined)
-    } else if (value === "featured") {
+    if (value === "featured") {
       setFeatured(true)
+    } else if (value === "all") {
+      setFeatured(undefined)
     }
   }
 
-  const getCurrentValue = () => {
-    if (featured === true) return "featured"
-    return "all"
-  }
+  const currentValue =
+    featured === true ? "featured" : featured === undefined ? undefined : "all"
 
   return (
-    <Select value={getCurrentValue()} onValueChange={handleValueChange}>
-      <SelectTrigger className="w-full md:w-[145px]">
+    <Select value={currentValue} onValueChange={handleValueChange}>
+      <SelectTrigger className="w-full md:w-[150px]">
         <SelectValue placeholder="Classificar por" />
       </SelectTrigger>
       <SelectContent>

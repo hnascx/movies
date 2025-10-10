@@ -37,8 +37,10 @@ export function FilterByCategory() {
     }
   }
 
+  const currentValue = category || undefined
+
   return (
-    <Select value={category || "all"} onValueChange={handleValueChange}>
+    <Select value={currentValue} onValueChange={handleValueChange}>
       <SelectTrigger className="w-full md:w-[180px]">
         <SelectValue placeholder="Filtrar por categoria" />
       </SelectTrigger>

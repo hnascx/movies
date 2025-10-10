@@ -1,3 +1,5 @@
+"use client"
+
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -8,10 +10,13 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Label } from "@/components/ui/label"
+import { Skeleton } from "@/components/ui/skeleton"
 import { GENRE_COLORS, GENRE_NAMES } from "@/data/genres"
+import { useDelayedLoading } from "@/lib/hooks"
 import { getImageUrl, type Movie } from "@/types/movie"
 import { ChevronRight, Star } from "lucide-react"
 import Image from "next/image"
+import { useState } from "react"
 
 interface MovieDialogProps {
   movie: Movie
@@ -19,6 +24,8 @@ interface MovieDialogProps {
 
 export function MovieDialog({ movie }: MovieDialogProps) {
   const posterUrl = getImageUrl(movie.poster_path, "w500")
+  const [imageLoaded, setImageLoaded] = useState(false)
+  const showSkeleton = useDelayedLoading(2000)
 
   const formatDate = (dateString: string) => {
     const date = new Date(dateString)
@@ -44,20 +51,26 @@ export function MovieDialog({ movie }: MovieDialogProps) {
         <div className="flex flex-col md:flex-row m-4 gap-6">
           <div className="mx-auto">
             <div className="h-[330px] w-[220px] relative shrink-0">
+              {showSkeleton || !imageLoaded ? (
+                <Skeleton className="w-full h-full rounded-md" />
+              ) : null}
               {posterUrl ? (
                 <Image
                   src={posterUrl}
-                  className="rounded-md object-cover"
+                  className={`rounded-md object-cover ${
+                    showSkeleton || !imageLoaded ? "opacity-0" : "opacity-100"
+                  } transition-opacity duration-300`}
                   alt={movie.title}
                   fill
+                  onLoad={() => setImageLoaded(true)}
                 />
-              ) : (
+              ) : !showSkeleton ? (
                 <div className="w-full h-full bg-muted rounded-md flex items-center justify-center">
                   <span className="text-sm text-muted-foreground">
                     Sem imagem
                   </span>
                 </div>
-              )}
+              ) : null}
             </div>
           </div>
           <div className="flex flex-col gap-3 md:gap-4">
