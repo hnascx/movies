@@ -41,16 +41,18 @@ export function MoviesCards() {
   }
 
   if (movies.length === 0) {
+    const hasFilters = searchQuery || category || featured !== undefined
+
     return (
       <section className="mt-6 md:mt-8 text-center p-8">
         <p className="text-muted-foreground">
-          {searchQuery
-            ? `Nenhum filme encontrado para "${searchQuery}"`
+          {hasFilters
+            ? "Nenhum filme encontrado com os filtros aplicados"
             : "Nenhum filme encontrado"}
         </p>
         <p className="text-sm text-muted-foreground mt-2">
-          {searchQuery
-            ? "Tente pesquisar com outro termo"
+          {hasFilters
+            ? "Tente remover alguns filtros ou pesquisar com outros termos"
             : "Execute o script de população: cd backend && node populate.js"}
         </p>
       </section>
