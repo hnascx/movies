@@ -19,7 +19,7 @@ export function MoviesCards() {
   const initialLoading = useDelayedLoading(2000)
   const { searchQuery, category, featured } = useMoviesContext()
   const { movies, loading, error } = useMovies({
-    pageSize: 20,
+    pageSize: 100,
     search: searchQuery || undefined,
     category,
     featured,

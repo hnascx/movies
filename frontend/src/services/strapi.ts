@@ -3,7 +3,6 @@ const API_URL = `${STRAPI_URL}/api`
 
 export type MovieCategory = "now_playing" | "popular" | "top_rated" | "upcoming"
 
-// Strapi v5 structure - dados diretos, sem attributes
 export interface StrapiGenre {
   id: number
   documentId: string
@@ -167,7 +166,7 @@ export async function getMoviesByGenre(
   return response.json()
 }
 
-// Converte formato Strapi v5 para o formato usado no frontend
+// Converte formato Strapi para o formato usado no frontend
 export function transformStrapiMovie(strapiMovie: StrapiMovie) {
   return {
     id: strapiMovie.tmdb_id,
